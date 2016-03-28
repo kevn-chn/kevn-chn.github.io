@@ -1,0 +1,44 @@
+---
+layout: post
+title:  "One for All, and All .forEach"
+date:   2016-03-28 00:00:00
+categories:
+tags: js arrays forEach
+image:
+---
+If you've spent a decent amount of time coding in Javascript, you've probably considered whether to use a `for` loop or the native `.forEach` method to iterate through an array. A `for` loop often performs faster, and you can break or return out of a `for` loop to end your looping earlier, which you can't do with `.forEach`. However, if you know your array may have gaps (which is possible since Javascript allows for sparse arrays), consider using `.forEach`.
+
+``` js
+var array = [];
+array[0] = 'zero';
+array[5] = 'five';
+array[10] = 'ten';
+
+for (var i = 0; i < array.length; i++) {
+  console.log(array[i]);
+} // TypeError: Cannot read property 'length' of undefined
+```
+
+In the contrived example above, we wish to log the number of characters of each string in the array. However, because our `for` loop will still iterate over our gap indices, we are greeted with a type error when our interpreter tries to access the length property of an undefined value. We could add another condition to check whether our index has been initialized or not, but it is much easier to simply use our native `.forEach` method, since it only executes the callback for each element present in the array:
+
+``` js
+array.forEach(function(value) {
+  console.log(value.length);
+}); // logs 4, 4, 3
+```
+
+Another sometimes overlooked benefit of the `.forEach` method is that it allows us to set the lexical `this` value for our callback. By passing an optional second argument, we can save ourselves from having to `.bind` our callback function:
+
+``` js
+var PointGuard = function(name) {
+  this.name = name;
+  this.compare = function(player) {console.log(this.name, 'is better than', player.name);};
+};
+var curry = new PointGuard('Stephen Curry');
+var westbrook = new PointGuard('Russell Westbrook');
+var lillard = new PointGuard('Damian Lillard');
+var noOne = new PointGuard('No one');
+var players = [westbrook, lillard];
+
+players.forEach(curry.compare, noOne); // logs 'No one is better than' each player
+```

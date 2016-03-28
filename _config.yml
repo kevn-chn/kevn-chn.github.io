@@ -16,3 +16,7 @@ paginate: 4
 author: Kevin Chen
 
 gems: [jekyll-paginate]
+
+kramdown:
+  input: GFM
+  syntax_highlighter: rouge
