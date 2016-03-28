@@ -32,13 +32,13 @@ Another sometimes overlooked benefit of the `.forEach` method is that it allows 
 ``` js
 var PointGuard = function(name) {
   this.name = name;
-  this.compare = function(player) {console.log(this.name, 'is better than', player.name);};
+  this.compare = function(player) {console.log(this.name, 'is a better shooter than', player.name);};
 };
 var curry = new PointGuard('Stephen Curry');
 var westbrook = new PointGuard('Russell Westbrook');
 var lillard = new PointGuard('Damian Lillard');
-var noOne = new PointGuard('No one');
 var players = [westbrook, lillard];
 
-players.forEach(curry.compare, noOne); // logs 'No one is better than' each player
+players.forEach(curry.compare); // logs ' is a better shooter than' each player
+players.forEach(curry.compare, curry); // logs 'Stephen Curry is a better shooter than' each player
 ```
